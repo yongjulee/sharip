@@ -1,0 +1,101 @@
+[시퀀스]
+create sequence TRAVEL_TABLE_SEQ
+start with 0
+minvalue 0
+increment by 1;
+
+create sequence CONTINENT_TABLE_SEQ
+start with 0
+minvalue 0
+increment by 1;
+
+create sequence BOARD_TABLE_SEQ
+start with 0
+minvalue 0
+increment by 1;
+
+create sequence REPLY_TABLE_SEQ
+start with 0
+minvalue 0
+increment by 1;
+
+[회원 테이블]
+create table USER_TABLE(
+	USER_MAIL varchar2(50),
+	USER_PW varchar2(100) not null,
+	USER_NAME varchar2(50) not null,
+	USER_PIC varchar2(100),
+	constraint USER_TABLE_PK primary key (USER_MAIL)
+);
+
+[여행 목적 테이블]
+create table TRAVEL_TABLE(
+	TRAVEL_IDX number not null,
+	TRAVEL_NAME varchar2(20) not null,
+	constraint TRAVEL_TABLE_PK primary key (TRAVEL_IDX)
+);
+
+insert into TRAVEL_TABLE (TRAVEL_IDX, TRAVEL_NAME) values(TRAVEL_TABLE_SEQ.NEXTVAL, 'food');
+insert into TRAVEL_TABLE (TRAVEL_IDX, TRAVEL_NAME) values(TRAVEL_TABLE_SEQ.NEXTVAL, 'culture');
+insert into TRAVEL_TABLE (TRAVEL_IDX, TRAVEL_NAME) values(TRAVEL_TABLE_SEQ.NEXTVAL, 'nature');
+insert into TRAVEL_TABLE (TRAVEL_IDX, TRAVEL_NAME) values(TRAVEL_TABLE_SEQ.NEXTVAL, 'shopping');
+insert into TRAVEL_TABLE (TRAVEL_IDX, TRAVEL_NAME) values(TRAVEL_TABLE_SEQ.NEXTVAL, 'rest');
+
+[대륙 테이블]
+create table CONTINENT_TABLE(
+	CONTINENT_IDX number not null,
+	CONTINENT_NAME varchar2(20) not null,
+	constraint CONTINENT_TABLE_PK primary key (CONTINENT_IDX)
+);
+
+insert into CONTINENT_TABLE (CONTINENT_IDX, CONTINENT_NAME) values(CONTINENT_TABLE_SEQ.NEXTVAL, 'asia');
+insert into CONTINENT_TABLE (CONTINENT_IDX, CONTINENT_NAME) values(CONTINENT_TABLE_SEQ.NEXTVAL, 'north america');
+insert into CONTINENT_TABLE (CONTINENT_IDX, CONTINENT_NAME) values(CONTINENT_TABLE_SEQ.NEXTVAL, 'south america');
+insert into CONTINENT_TABLE (CONTINENT_IDX, CONTINENT_NAME) values(CONTINENT_TABLE_SEQ.NEXTVAL, 'europe');
+insert into CONTINENT_TABLE (CONTINENT_IDX, CONTINENT_NAME) values(CONTINENT_TABLE_SEQ.NEXTVAL, 'oceania');
+insert into CONTINENT_TABLE (CONTINENT_IDX, CONTINENT_NAME) values(CONTINENT_TABLE_SEQ.NEXTVAL, 'africa');
+
+[게시글 테이블]
+create table BOARD_TABLE(
+	BOARD_IDX number not null,
+	USER_MAIL varchar2(50) not null,
+	TRAVEL_IDX number not null,
+	CONTINENT_IDX number not null,
+	BOARD_TITLE varchar2(50) not null,
+	BOARD_DATE date	not null,
+	BOARD_IMG1 varchar2(100) not null,
+	BOARD_IMG2 varchar2(100) not null,
+	BOARD_IMG3 varchar2(100) not null,
+	BOARD_IMG4 varchar2(100),
+	BOARD_IMG5 varchar2(100),
+	BOARD_IMG6 varchar2(100),
+	BOARD_IMG7 varchar2(100),
+	BOARD_IMG8 varchar2(100),
+	BOARD_IMG9 varchar2(100),
+	BOARD_IMG10	varchar2(100),
+	BOARD_CONTENT varchar2(1000) not null,
+	BOARD_LAT varchar2(20) not null,
+	BOARD_LNG varchar2(20) not null,
+	BOARD_LOC varchar2(200) not null,
+	BOARD_AIR varchar2(200),
+	BOARD_DOM varchar2(200),
+	BOARD_BAG varchar2(200),
+	BOARD_ATT varchar2(200),
+	BOARD_ETC varchar2(200),
+	constraint BOARD_TABLE_PK primary key (BOARD_IDX),
+	constraint BOARD_TABLE_FK_USER_TABLE foreign key (USER_MAIL) references USER_TABLE(USER_MAIL),
+	constraint BOARD_TABLE_FK_TRAVEL_TABLE foreign key (TRAVEL_IDX) references TRAVEL_TABLE(TRAVEL_IDX),
+	constraint BOARD_TABLE_FK_CONTINENT_TABLE foreign key (CONTINENT_IDX) references CONTINENT_TABLE(CONTINENT_IDX)
+);
+
+[댓글 테이블]
+create table REPLY_TABLE(
+	REPLY_IDX number not null,
+	USER_MAIL varchar2(50) not null,
+	BOARD_IDX number not null,
+	REPLY_CONTENT varchar2(100) not null,
+	REPLY_DATE TIMESTAMP not null,
+	constraint REPLY_TABLE_PK primary key (REPLY_IDX),
+	constraint REPLY_TABLE_FK_USER_TABLE foreign key (USER_MAIL) references USER_TABLE(USER_MAIL),
+	constraint REPLY_TABLE_FK_BOARD_TABLE foreign key (BOARD_IDX) references BOARD_TABLE(BOARD_IDX)
+);
